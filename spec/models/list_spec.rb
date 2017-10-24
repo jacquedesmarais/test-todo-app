@@ -45,10 +45,27 @@ RSpec.describe List, type: :model do
     it 'should list all tasks that are incomplete' do
       list = List.new(name: "chores")
       task1 = Task.new(list_id: list.id, complete: false)
-      task2 = Task.new(list_id: list.id, complete: false)
+      task2 = Task.new(list_id: list.id, complete: true)
+      task3 = Task.new(list_id: list.id, complete: true)
+
+      list.incomplete_tasks
+      list.tasks.each do |task|
+        expect(task.incomplete_tasks).to eq(2)
+      end
     end
   end
 
+  describe '#favorite_tasks' do
+    it 'should only return tasks with a favorite of true' do
+     list = List.new(name: "chores")
+     task1 = Task.new(list_id: list.id, favorite: false)
+     task2 = Task.new(list_id: list.id, favorite: true)
+     task3 = Task.new(list_id: list.id, favorite: true)
 
-
+     list.favorite_tasks
+     list.tasks.each do |task|
+      expect(task.favorite_tasks).to eq(2)
+     end
+    end
+  end
 end
